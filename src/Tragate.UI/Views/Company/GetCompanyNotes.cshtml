@@ -1,0 +1,43 @@
+﻿@model Tragate.UI.Models.Company.CompanyNoteListViewModel
+
+<style>
+    table tr td {
+        text-align: center;
+    }
+</style>
+
+<script src="~/assets/app-js/company-note-inside.js" asp-append-version="true"></script>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Not</th>
+            <th>Ekleyen Kullanıcı</th>
+            <th>Tarih</th>
+            <th>İşlemler</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.CompanyNoteList)
+        {
+            <tr>
+                <td>@item.Description</td>
+                <td>@item.CreatedUser</td>
+                <td>@string.Format("{0: dd.MM.yyyy}", item.CreatedDate)</td>
+                <td>
+                    <button onclick="DeleteNote(@item.Id,@item.CompanyId)" class="btn btn-danger btn-xs">
+                        <i class="fa fa-trash"></i> Sil
+                    </button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+<cs-pager cs-paging-pagesize="5"
+          cs-paging-pagenumber="@Model.PageNumber"
+          cs-paging-totalitems="@Model.TotalCount"
+          cs-pagenumber-param="page"
+          asp-controller="Company"
+          asp-action="GetCompanyNotes"></cs-pager>

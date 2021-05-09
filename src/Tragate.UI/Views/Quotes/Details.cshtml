@@ -1,0 +1,86 @@
+@model Tragate.UI.Models.Quotation.QuotationDetailViewModel
+
+@{
+    ViewData["Title"] = "Teklif Görüntüle";
+}
+<link href="~/assets/css/card.css" rel="stylesheet" />
+<link href="~/assets/css/custom-css/tile-dash.css" rel="stylesheet" />
+
+<div class="row">
+    <div class="col-md-6">
+        <h3>Teklif Detayları</h3>
+        <table class="table table-responsive table-striped">
+            <tr>
+                <th>Alıcı</th>
+                <th>Satıcı</th>
+            </tr>
+            <tr>
+                <td>@Model.BuyerUserFullName</td>
+                <td>@Model.SellerCompanyName</td>
+            </tr>
+            <tr>
+                <td>@Model.BuyerUserEmail</td>
+                <td>@Model.SellerUserFullName</td>
+            </tr>
+            <tr>
+                <td>@Model.BuyerContactStatus</td>
+                <td>@Model.SellerContactStatus</td>
+            </tr>
+        </table>
+        <hr />
+        <section>
+            <h4>Teklif Ürünleri</h4>
+            <table>
+                @foreach (var products in Model.QuotationProductList)
+                {
+                    <tr>
+                        <td>
+                            <img src="@products.ProductListImagePath" class="img img-responsive img-thumbnail" style="max-width: 70px;" alt="Alternate Text" />
+                        </td>
+                        <td style="padding: 5px;">@products.ProductTitle</td>
+                    </tr>
+                }
+            </table>
+        </section>
+        <hr />
+        <table class="table table-responsive table-striped">
+            <tr>
+                <td>Telif No: </td>
+                <td>@Model.Id</td>
+            </tr>
+            <tr>
+                <td>Başlık: </td>
+                <td>@Model.Title</td>
+            </tr>
+            <tr>
+                <td>Telif Durumu: </td>
+                <td>@Model.OrderStatus</td>
+            </tr>
+            <tr>
+                <td>Tarihi: </td>
+                <td>@Model.CreatedDate</td>
+            </tr>
+            <tr>
+                <td>Son İşlem Tarihi: </td>
+                <td>@Model.UpdatedDate</td>
+            </tr>
+        </table>
+    </div>
+    <div class="col-md-6">
+        <h3>Teklif Geçmişi</h3>
+        <table>
+            @foreach (var history in Model.QuotationHistories)
+            {
+                <tr>
+                    <td>
+                        <img src="@history.ProfileImagePath" class="img img-responsive img-circle" style="max-width: 40px;" />
+                    </td>
+                    <td style="padding: 5px;">
+                        @history.CreatedUser - @history.CreatedDate<br />
+                        @history.Description
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>

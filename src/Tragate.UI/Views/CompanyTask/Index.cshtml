@@ -1,0 +1,108 @@
+@model Tragate.UI.Models.Company.CompanyTaskListViewModel
+@{ ViewData["Title"] = "Firma Görevleri"; }
+
+
+<hr />
+<div class="col-lg-12">
+    <div class="ibox">
+        <div class="ibox-title">
+            <h5>Firma Görevler listesi</h5>
+            <div class="ibox-tools">
+                <a class="collapse-link">
+                    <i class="fa fa-chevron-up"></i>
+                </a>
+            </div>
+        </div>
+        <div class="ibox-content">
+            <div class="scroll_content">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel panel-default">
+                            <div class="row" style="padding:15px;">
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label class="col-form-label" for="categoryGroup">Atayan Kullanıcı</label>
+                                        <select name="created-user" id="created-user" class="form-control"></select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label class="col-form-label" for="categoryGroup">Atanan Kullanıcı</label>
+                                        <select name="responsible-user" id="responsible-user" class="form-control"></select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label class="col-form-label" for="status">Durum</label>
+                                        <select name="status" id="status" class="form-control"></select>
+                                    </div>
+                                </div>
+                            </div>
+                            <table class="table text-center table-responsive">
+                                <thead>
+                                    <tr>
+                                        <th>İşlemler</th>
+                                        <th>Görev No</th>
+                                        <th>Görev Açıklaması</th>
+                                        <th>Görev Tipi</th>
+                                        <th>Firma Adı</th>
+                                        <th>Ekleyen Kullanıcı</th>
+                                        <th>Atanan Kullanıcı</th>
+                                        <th>Durumu</th>
+                                        <th>Oluşturulma Tarihi</th>
+                                        <th>Bitiş Tarihi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.CompanyTaskList)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <a title="Details"
+                                                   class="btn btn-warning btn-xs detail-lg"
+                                                   data-url="/company/company-details/@item.CompanyId" data-title="Firma Detay" data-toggle="modal" data-target="#detailModal-lg">
+                                                    <i class="fa fa-angle-double-right"></i> Detay
+                                                </a>
+                                                <a href="@Model.WebsiteUrl/@item.CompanySlug/home" target="_blank" class="btn btn-success btn-xs">
+                                                    <i class="fa fa-link"></i> Git
+                                                </a>
+                                                <button type="button" onclick="CompanyTaskStatusUpdate(@item.Id)" class="btn btn-primary btn-xs">
+                                                    <i class="fa fa-check"></i> Tamamla
+                                                </button>
+                                            </td>
+                                            <td>@item.Id</td>
+                                            <td>@item.Description</td>
+                                            <td>@item.CompanyTaskType</td>
+                                            <td>@item.CompanyTitle</td>
+                                            <td>@item.CreatedUser</td>
+                                            <td>@item.ResponsibleUser</td>
+                                            <td>@item.Status</td>
+                                            <td>@item.CreatedDate</td>
+                                            <td>@item.EndDate</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                        <cs-pager cs-paging-pagesize="10"
+                                  cs-paging-pagenumber="@Model.PageNumber"
+                                  cs-paging-totalitems="@Model.TotalCount"
+                                  cs-pagenumber-param="page"
+                                  asp-route-status="@Model.Status"
+                                  asp-controller="CompanyTask"
+                                  asp-action="Index"></cs-pager>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@Html.Partial("_PopupDetail")
+
+@section Scripts {
+    <link href="~/assets/css/custom-css/custom-search.css" rel="stylesheet" />
+
+    <script src="~/assets/app-js/task-list.js" asp-append-version="true"></script>
+}

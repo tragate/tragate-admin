@@ -1,0 +1,35 @@
+@model Tragate.UI.Models.Company.CompanyViewModel
+
+@{
+    ViewData["Title"] = "Firma Düzenle";
+}
+
+<script src="~/assets/app-js/company.js" asp-append-version="true"></script>
+
+<form id="updateForm">
+    <div class="form-horizontal">
+        <hr />
+        <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="User.ProfileImagePath" />
+        <vc:summary />
+
+        <div class="form-group">
+            <label asp-for="FullName" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="FullName" class="form-control" />
+                <span asp-validation-for="FullName" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <a id="btnUpdate" class="btn btn-success">Güncelle</a>
+                <a asp-action="Index" class="btn btn-info">Anasayfa'ya Git</a>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,41 @@
+﻿@model Tragate.UI.Models.User.UserProductListViewModel
+
+<style>
+    table tr td {
+        text-align: center;
+    }
+</style>
+
+<script src="~/assets/app-js/user-product-pagination.js" asp-append-version="true"></script>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Resim</th>
+            <th>Ürün Adı</th>
+            <th>Oluşturma Tarihi</th>
+            <th>İşlemler</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.UserProductList)
+        {
+            <tr>
+                <td>
+                    <img src="@item.ListImagePath" alt="@item.ProductTitle" style="width:80px;" />
+                </td>
+                <td>@item.ProductTitle</td>
+                <td>@item.CreatedDate</td>
+                <td>
+                    <a href="@Model.WebSiteUrl/product/@item.Slug" target="_blank" class="btn btn-primary">Git</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<cs-pager cs-paging-pagesize="20"
+          cs-paging-pagenumber="@Model.PageNumber"
+          cs-paging-totalitems="@Model.TotalCount"
+          cs-pagenumber-param="page"
+          asp-controller="User"
+          asp-action="GetUserProduct"></cs-pager>

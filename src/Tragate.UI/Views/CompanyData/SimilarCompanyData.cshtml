@@ -1,0 +1,29 @@
+@model Tragate.UI.Models.Company.CompanyDataListViewModel
+
+<style>
+    table tr td {
+        text-align: center;
+    }
+    .companydata-similar-link{
+        cursor: pointer;
+        color:#337ab7;
+    }
+</style>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Firma Data Id</th>
+            <th>Başlık</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var item in @Model.CompanyDataList){
+            <tr>
+                <td>@item.Id</td>
+                <td><span class="companydata-similar-link">@item.Title</span></td>
+            </tr>
+        }
+    </tbody>
+</table>

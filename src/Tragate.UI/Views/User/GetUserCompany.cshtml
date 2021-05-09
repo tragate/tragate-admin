@@ -1,0 +1,41 @@
+﻿@model Tragate.UI.Models.User.UserCompanyListViewModel
+
+<style>
+    table tr td {
+        text-align: center;
+    }
+</style>
+
+<script src="~/assets/app-js/user-company-pagination.js" asp-append-version="true"></script>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Resim</th>
+            <th>Firma Id</th>
+            <th>Firma Adı</th>
+            <th>İşlemler</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.UserCompanyList)
+        {
+            <tr>
+                <td>
+                    <img src="@item.ProfileImagePath" alt="@item.CompanyName" style="width:80px;" />
+                </td>
+                <td>@item.CompanyId</td>
+                <td>@item.CompanyName</td>
+                <td>
+                    <a href="@Model.WebSiteUrl/@item.Slug/home" target="_blank" class="btn btn-primary">Git</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<cs-pager cs-paging-pagesize="5"
+          cs-paging-pagenumber="@Model.PageNumber"
+          cs-paging-totalitems="@Model.TotalCount"
+          cs-pagenumber-param="page"
+          asp-controller="User"
+          asp-action="GetUserCompany"></cs-pager>

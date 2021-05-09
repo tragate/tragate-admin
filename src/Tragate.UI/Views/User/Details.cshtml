@@ -1,0 +1,180 @@
+@model Tragate.UI.Models.User.UserViewModel
+
+@{
+    ViewData["Title"] = "Kullanıcı Görüntüle";
+}
+
+<script>
+    $(document).ready(function() {
+        $("#files").kendoUpload({
+            async: {
+                autoUpload: false,
+                saveUrl: "/user/user-profile-image-upload/@Model.UserId"
+            },
+            localization: {
+                select: 'Dosya Seç',
+                clearSelectedFiles: 'Kaldır',
+                cancel: 'İptal',
+                statusUploaded:'Tamamlandı',
+                headerStatusUploading:'Yükleniyor...',
+                uploadSelectedFiles:'Yükle'
+
+            },
+            success: function(result) {
+
+                if(result.response.success){
+                    $("#image-loading").show();
+                    setTimeout(function(){
+                        $.ajax({
+                            type: "GET",
+                            url: "/user/user-image/@Model.UserId",
+                            success: function (data) {
+                                if (data != "" && data != null) {
+                                    $("#user-img").attr("src",data);
+                                    $("#image-loading").hide();
+                                }
+                            },
+                            error: function(){
+                                setTimeout(function(){location.reload();}, 2000);
+                            }
+                        });
+                    }, 2000);
+
+                }
+                else{
+                    var error = result.response.errors.join(',');
+                    alert(error);
+                }
+            },
+            error: function(result) {
+
+            }
+        });
+    });
+</script>
+<script src="~/assets/app-js/user-detail.js" asp-append-version="true"></script>
+
+<link href="~/assets/css/custom-css/detail-table.css" rel="stylesheet" />
+<link href="~/assets/css/card.css" rel="stylesheet" />
+<link href="~/assets/css/custom-css/tile-dash.css" rel="stylesheet" />
+
+<div class="tabs-container">
+    <div class="tabs-left">
+        <ul class="nav nav-tabs">
+            <li class="active"><a data-toggle="tab" href="#tab-user-information"> Kişisel Bilgiler</a></li>
+            <li><a data-toggle="tab" href="#tab-user-company" id="user-company" data-id="@Model.UserId">Firmalar</a></li>
+            <li><a data-toggle="tab" href="#tab-user-product" id="user-product" data-id="@Model.UserId">Ürünler</a></li>
+            <li><a data-toggle="tab" href="#tab-user-task" id="user-task" data-id="@Model.UserId">Görevler</a></li>
+            <li><a data-toggle="tab" href="#tab-user-note" id="user-note" data-id="@Model.UserId">Notlar</a></li>
+            <li><a data-toggle="tab" href="#tab-user-buyer-quotes" id="user-buyer-quotes" data-id="@Model.UserId">Satın Alma</a></li>
+            <li><a data-toggle="tab" href="#tab-user-seller-quotes" id="user-seller-quotes" data-id="@Model.UserId">Satış</a></li>
+        </ul>
+        <div class="tab-content ">
+            <div id="tab-user-information" class="tab-pane active">
+                <div class="panel-body">
+                    <div class="card">
+                        @Html.Partial("_UserCardHeader")
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">
+                                <label>Profil fotoğrafı</label>
+                                <input name="files" id="files" type="file" />
+                            </li>
+                            <li class="list-group-item">
+                                <label asp-for="UserId"></label>
+                                <p class="card-text">@Model.UserId</p>
+                            </li>
+                            <li class="list-group-item">
+                                <label asp-for="UserName"></label>
+                                <p class="card-text">@Model.UserName</p>
+                            </li>
+                            <li class="list-group-item">
+                                <label asp-for="Email"></label>
+                                <p class="card-text">@Model.Email</p>
+                            </li>
+                            <li class="list-group-item">
+                                <label asp-for="UserType"></label>
+                                <p class="card-text">@Model.UserType</p>
+                            </li>
+                            <li class="list-group-item">
+                                <label asp-for="Status"></label>
+                                <p class="card-text">@Model.Status</p>
+                            </li>
+                            <li class="list-group-item">
+                                <label asp-for="RegisterType"></label>
+                                <p class="card-text">@Model.RegisterType</p>
+                            </li>
+                            <li class="list-group-item">
+                                <label asp-for="Location"></label>
+                                <p class="card-text">@Model.Location.Name</p>
+                            </li>
+                            <li class="list-group-item">
+                                <label asp-for="CreatedDate"></label>
+                                <p class="card-text">@Model.CreatedDate</p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div id="tab-user-company" class="tab-pane">
+                <div class="panel-body">
+                    <div class="card">
+                        @Html.Partial("_UserCardHeader")
+                        <div id="tab-user-company-wrapper">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="tab-user-product" class="tab-pane">
+                <div class="panel-body">
+                    <div class="card">
+                        @Html.Partial("_UserCardHeader")
+                        <div id="tab-user-product-wrapper">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="tab-user-task" class="tab-pane">
+                <div class="panel-body">
+                    <div class="card">
+                        @Html.Partial("_UserCardHeader")
+                        <div id="tab-user-task-wrapper">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="tab-user-note" class="tab-pane">
+                <div class="panel-body">
+                    <div class="card">
+                        @Html.Partial("_UserCardHeader")
+                        <div id="tab-user-note-wrapper">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="tab-user-buyer-quotes" class="tab-pane">
+                <div class="panel-body">
+                    <div class="card">
+                        @Html.Partial("_UserCardHeader")
+                        <div id="tab-user-buyer-quotes-wrapper">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="tab-user-seller-quotes" class="tab-pane">
+                <div class="panel-body">
+                    <div class="card">
+                        @Html.Partial("_UserCardHeader")
+                        <div id="tab-user-seller-quotes-wrapper">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

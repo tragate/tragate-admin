@@ -1,0 +1,20 @@
+@model Tragate.UI.Models.Company.CompanyViewModel 
+
+@{
+    ViewData["Title"] = "Firma Sil";
+}
+    
+
+<form asp-action="Delete">
+    <vc:summary />
+
+    <h3> Firmayı silmek istediğinizden emin misiniz ? </h3>
+        
+   <input type="hidden" asp-for="Id" name="id">
+
+
+    <div class="form-actions no-color">
+        <input type="submit" value="Sil" class="btn btn-danger" />
+        <a asp-action="Index" class="btn btn-info">Anasayfa'ya Git</a>
+    </div>
+</form>

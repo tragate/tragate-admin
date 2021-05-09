@@ -1,0 +1,38 @@
+@model Tragate.UI.Models.Company.CompanyDataListViewModel
+<style>
+    table tr td { text-align: center; }
+
+    .companydata-similar-link {
+        cursor: pointer;
+        color: #337ab7;
+    }
+
+    ul.list-group { text-align: left; }
+</style>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>Alt</th>
+        <th>Üyelik</th>
+        <th>Başlık</th>
+        <th>Etiketler</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in @Model.CompanyDataList)
+    {
+        <tr>
+            <td>
+                <a class="go-child" data-id="@item.Id">+</a> |
+                <a class="delete-data" data-id="@item.Id">x</a>
+            </td>
+            <td>@item.Membership</td>
+            <td>
+                <a href="@item.CompanyProfileLink" target="_blank">@item.Title</a>
+            </td>
+            <td>@item.Tags</td>
+        </tr>
+    }
+    </tbody>
+</table>

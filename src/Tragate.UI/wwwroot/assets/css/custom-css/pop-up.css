@@ -1,0 +1,35 @@
+﻿body {
+}
+
+
+.col-lg-6{
+    max-height: 650px;
+}
+
+.modal-footer button{
+    width: 150px;
+    margin-right: 5px;
+}
+
+.bordered-left{
+    border-left: 1px solid #666;
+}
+
+.bordered-right{
+    border-right: 1px solid #666;
+}
+
+.max-scrolled{
+    max-height: 110px;
+    overflow-y: scroll;
+}
+
+/* .custom-scrolled{
+    /* overflow-x:hidden;
+    overflow-y: scroll; 
+} */
+
+.modal{
+    overflow-y:auto;
+}
+

@@ -1,0 +1,93 @@
+﻿@model Tragate.UI.Models.Category.CategoryViewModel; 
+@{ ViewData["Title"] = "Kategoriler"; }
+
+<div class="row">
+    <div class="col-lg-6">
+        <div class="ibox ">
+            <div class="ibox-title">
+                <h5>Tüm Kategoriler</h5>
+            </div>
+            <div class="ibox-content">
+                <p class="m-b-lg">
+                    Düzenlemek veya alt kategori eklemek için aşağıdaki listelenen kategorilerden birini seçerek yan tarafta düzenleyebilirsiniz.
+                </p>
+                <div id="treeview"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="ibox ">
+            <div class="ibox-title">
+                <h5>Kategori Düzenle</h5>
+            </div>
+            <div class="ibox-content">
+                <form id="frmCategory">
+                    <input type="hidden" asp-for="Id" />
+                    <div class="form-horizontal">
+                        <vc:summary />
+                        <div class="form-group">
+                            <label asp-for="ParentId" class="col-md-3 control-label"></label>
+                            <div class="col-md-9">
+                                <input id="parentId" asp-for="ParentId" readonly="true" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Title" class="col-md-3 control-label"></label>
+                            <div class="col-md-9">
+                                <input asp-for="Title" class="form-control" required />
+                                <span asp-validation-for="Title" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="MetaKeyword" class="col-md-3 control-label"></label>
+                            <div class="col-md-9">
+                                <input asp-for="MetaKeyword" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="MetaDescription" class="col-md-3 control-label"></label>
+                            <div class="col-md-9">
+                                <input asp-for="MetaDescription" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="StatusId" class="col-md-3 control-label"></label>
+                            <div class="col-md-9">
+                                <input type="number" min="1" max="6" asp-for="StatusId" value="3" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Priority" class="col-md-3 control-label"></label>
+                            <div class="col-md-9">
+                                <input type="number" min="1" asp-for="Priority" class="form-control" />
+                            </div>
+                        </div>
+
+                        <input name="files" id="files" type="file" />
+                        <br/>
+                        <div class="form-group">
+                            <button id="btnTemizle" onClick="category.resetForm()" class="btn btn-info" style="float: right;margin-right: 16px;" type="button">
+                                <i class="fa fa-paste"></i> Temizle
+                            </button>
+                            <button type="submit" class="btn btn-primary" style="float: right;margin-right: 16px;" type="button">
+                                <i class="fa fa-check"></i> Kaydet
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <img id="image">
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+<script>
+    $(document).ready(function() {
+        category.init();
+        category.submitForm();
+    });
+</script>
+<script src="~/assets/app-js/category.js" asp-append-version="true"></script>
+}

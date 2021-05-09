@@ -1,0 +1,54 @@
+﻿@model Tragate.UI.Models.Quotation.QuotationCompanySellerListViewModel
+
+<style>
+    table tr td {
+        text-align: center;
+    }
+</style>
+
+
+<script src="~/assets/app-js/company-seller-quotes-inside.js" asp-append-version="true"></script>
+
+<table class="table table-responsive">
+    <thead>
+        <tr>
+            <th>İşlemler</th>
+            <th>Teklif No</th>
+            <th>Title</th>
+            <th>Sipariş Durumu</th>
+            <th>Alıcı</th>
+            <th>Alıcı Durumu</th>
+            <th>Son İşlem Tarihi</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.QuotationCompanySellerList)
+        {
+            <tr>
+                <td>
+                    <a title="Details"
+                       class="btn btn-warning btn-xs quoteDetail"
+                       data-url="quotes/quote-details/@item.Id" data-title="Teklif Detay" data-toggle="modal" data-target="#quoteDetailModal-lg">
+                        <i class="fa fa-angle-double-right"></i> Detay
+                    </a>
+                </td>
+                <td>@item.Id</td>
+                <td>@item.Title</td>
+                <td>@item.OrderStatus</td>
+                <td>@item.BuyerUser</td>
+                <td>@item.BuyerContactStatus</td>
+                <td>@item.UpdatedDate</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+<cs-pager cs-paging-pagesize="10"
+          cs-paging-pagenumber="@Model.PageNumber"
+          cs-paging-totalitems="@Model.TotalCount"
+          cs-pagenumber-param="page"
+          asp-controller="Company"
+          asp-action="CompanySellerQuotes"></cs-pager>
+
+@Html.Partial("_PopupQuoteDetail")

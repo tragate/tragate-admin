@@ -1,0 +1,51 @@
+﻿@model Tragate.UI.Models.Quotation.QuotationUserBuyerListViewModel
+
+<style>
+    table tr td {
+        text-align: center;
+    }
+</style>
+
+<script src="~/assets/app-js/user-buyer-quotation-pagination.js" asp-append-version="true"></script>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>İşlemler</th>
+            <th>Başlık</th>
+            <th>Satıcı Firma</th>
+            <th>Satıcı</th>
+            <th>Satıcı Durumu</th>
+            <th>Durum</th>
+            <th>Son İşlem Tarihi</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.QuotationUserBuyerList)
+        {
+            <tr>
+                <td>
+                    <a title="Details"
+                       class="btn btn-warning btn-xs quoteDetail"
+                       data-url="quotes/quote-details/@item.Id" data-title="Teklif Detay" data-toggle="modal" data-target="#quoteDetailModal-lg">
+                        <i class="fa fa-angle-double-right"></i> Detay
+                    </a>
+                </td>
+                <td>@item.Title</td>
+                <td>@item.SellerCompany</td>
+                <td>@item.SellerUser</td>
+                <td>@item.SellerContactStatus</td>
+                <td>@item.OrderStatus</td>
+                <td>@item.UpdatedDate</td>
+            </tr>
+        }
+    </tbody>
+</table>
+<cs-pager cs-paging-pagesize="10"
+          cs-paging-pagenumber="@Model.PageNumber"
+          cs-paging-totalitems="@Model.TotalCount"
+          cs-pagenumber-param="page"
+          asp-controller="User"
+          asp-action="UserBuyerQuotation"></cs-pager>
+
+@Html.Partial("_PopupQuoteDetail")

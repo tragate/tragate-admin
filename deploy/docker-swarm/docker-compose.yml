@@ -1,0 +1,56 @@
+version: '3'
+
+services:
+  dashboard:
+    image: portainer/portainer
+    volumes: 
+      - /var/run/docker.sock:/var/run/docker.sock
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+      placement:
+        constraints: [node.role == manager]
+    ports:
+      - "9000:9000"  
+
+  admin:
+    image: ninjafx/tragate-api:latest
+    ports:
+      - "5002:5002"
+    depends_on:
+      - redis
+      - api
+
+  api:
+    image: ninjafx/tragate-api:latest
+    ports:
+      - "5002:5002"
+    depends_on:
+      - db
+      - elk
+
+  db:
+    image: ninjafx/tragate-db:latest
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+      placement:
+        constraints: [node.role == manager]
+    environment:
+      ACCEPT_EULA: 'Y'
+      SA_PASSWORD: testuser123!
+    ports:
+      - "1433:1433"
+  
+  redis:
+    image: redis
+    ports:
+      - 6379:6379
+
+  elk:
+    image: nshou/elasticsearch-kibana
+    ports:
+      - 9200:9200
+      - 5601:5601

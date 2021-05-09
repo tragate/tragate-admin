@@ -1,0 +1,23 @@
+
+@{
+    Layout = null;
+}
+<style>
+    #image-loading{
+        margin-left: 33px;
+        position: absolute;
+        color: #fff;
+        font-size: 35px;
+        z-index: 100;
+        margin-top: 25px;
+        display: none;
+    }
+</style>
+<div class="card-img-top">
+    <i class="fa fa-spinner fa-spin" id="image-loading"></i>
+    <img id="user-img" src="@Model.ProfileImagePath" onerror='this.src="/assets/images/empty-profile.png"' alt="Card image cap" height="100">
+    
+</div>
+<div class="card-body">
+    <h5 class="card-title" id="userTitle" data-title="@Model.UserName">@Model.UserName</h5>
+</div>

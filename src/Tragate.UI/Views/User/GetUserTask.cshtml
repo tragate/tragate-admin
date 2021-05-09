@@ -1,0 +1,41 @@
+﻿@model Tragate.UI.Models.User.UserTaskListViewModel
+
+<style>
+    table tr td {
+        text-align: center;
+    }
+</style>
+
+<script src="~/assets/app-js/user-task-pagination.js" asp-append-version="true"></script>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Görev</th>
+            <th>Görev Tipi</th>
+            <th>Firma</th>
+            <th>Oluşturulma Tarihi</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.UserTaskList)
+        {
+            <tr>
+                <td>@item.Description</td>
+                <td>@item.CompanyTaskType</td>
+                <td>
+                    <a href="@Model.WebsiteUrl/@item.CompanySlug/home" target="_blank">
+                        @item.CompanyTitle
+                    </a>
+                </td>
+                <td>@item.CreatedDate.ToString("dd.MM.yyyy")</td>
+            </tr>
+        }
+    </tbody>
+</table>
+<cs-pager cs-paging-pagesize="5"
+          cs-paging-pagenumber="@Model.PageNumber"
+          cs-paging-totalitems="@Model.TotalCount"
+          cs-pagenumber-param="page"
+          asp-controller="User"
+          asp-action="GetUserTask"></cs-pager>

@@ -1,0 +1,75 @@
+@model Tragate.UI.Models.Company.CompanyAdminListViewModel
+
+<style>
+    table tr td {
+        text-align: center;
+    }
+</style>
+
+<script src="~/assets/app-js/company-admin-inside.js" asp-append-version="true"></script>
+<script src="~/assets/app-js/company-admin-task.js" asp-append-version="true"></script>
+
+<table class="table">
+    <tr>
+        <td>Yönetici ekle</td>
+        <td><input type="email" class="form-control" id="txtEmail" /> </td>
+        <td><input type="button" class="btn btn-success" value="Ekle" data-companyId="@Model.CompanyId" id="btnAddAdmin" /></td>
+    </tr>
+</table>
+<table class="table">
+    <thead>
+        <tr>
+            <th>User Id</th>
+            <th>User Name</th>
+            <th>E-mail</th>
+            <th>Role</th>
+            <th>İşlemler</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in @Model.CompanyAdminList)
+        {
+            <tr>
+                <td>@item.UserId</td>
+                <td>@item.UserName</td>
+                <td>@item.Email</td>
+                <td>@item.Role</td>
+                <td>
+                    <button type="button" id="btnTaskModal" class="btn btn-primary" data-toggle="modal" data-target="#taskModal" data-user-id="@item.UserId" data-company-id="@Model.CompanyId">Görev Ata</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<cs-pager cs-paging-pagesize="5"
+          cs-paging-pagenumber="@Model.PageNumber"
+          cs-paging-totalitems="@Model.TotalCount"
+          cs-pagenumber-param="page" ,
+          asp-controller="Company"
+          asp-action="GetCompanyAdmins"></cs-pager>
+
+<div class="modal inmodal" id="taskModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content animated flipInY">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title text-center">Görev Ekle</h4>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="userId" value="" />
+                <div class="form-group">
+                    <label class="col-form-label">Görev</label>
+                    <input type="text" name="txtTask" id="txtTask" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label class="col-form-label">Görev Tipi</label>
+                    <select name="ddlTaskType" id="ddlTaskType" class="form-control"></select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnSaveTask" class="btn btn-primary">Görevi Kaydet</button>
+            </div>
+        </div>
+    </div>
+</div>
+

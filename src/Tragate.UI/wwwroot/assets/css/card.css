@@ -1,0 +1,35 @@
+.card{
+    width: 100%;
+    border: 1px solid #efefef;
+    border-radius: 10px;
+    padding: 0;
+}
+
+.card-img-top{
+    background: #587794;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    padding: 5px 10px;
+    min-height: 50px;
+}
+.card-img-top > img {
+    border-radius: 50%;
+    margin-top: 0;
+    margin-left: 5px;
+    position: absolute;
+}
+
+.card-body{
+  padding-top: 7%;
+  padding-left: 10px;
+}
+
+.card-title{
+  font-size: 20px;
+  font-family: trebuchet MS;
+}
+
+.card-text{
+  font-size: 12px;
+    margin-left: 5px;
+}

@@ -1,0 +1,460 @@
+@model Tragate.UI.Models.Company.CompanyDetailViewModel
+@{
+    ViewData["Title"] = "Firma Bilgileri";
+}
+<style>
+    #page-wrapper {
+        padding: 0;
+        height: 920px;
+    }
+
+    .card-img-top .btn-sm {
+        font-size: 10px;
+    }
+
+    p {
+        margin-left: 20px;
+    }
+
+    #tab-superv-wrapper {
+        margin: 0 0 10px 0;
+    }
+</style>
+<script>
+    $(document).ready(function() {
+        $("#files").kendoUpload({
+            async: {
+                autoUpload: false,
+                saveUrl: "/company/image-upload/@Model.UserId"
+            },
+            localization: {
+                select: 'Dosya Seç',
+                clearSelectedFiles: 'Kaldır',
+                cancel: 'İptal',
+                statusUploaded:'Tamamlandı',
+                headerStatusUploading:'Yükleniyor...',
+                uploadSelectedFiles:'Yükle'
+
+            },
+            success: function(result) {
+
+                if(result.response.success){
+                    $("#image-loading").show();
+                    setTimeout(function(){
+                        $.ajax({
+                            type: "GET",
+                            url: "/company/company-image/@Model.UserId",
+                            success: function (data) {
+                                if (data != "" && data != null) {
+                                    $("#company-img").attr("src",data);
+                                    $("#image-loading").hide();
+                                }
+                            },
+                            error: function(){
+                                setTimeout(function(){location.reload();}, 2000);
+                            }
+                        });
+                    }, 2000);
+
+                }
+                else{
+                    var error = result.response.errors.join(',');
+                    alert(error);
+                }
+            },
+            error: function(result) {
+
+            }
+        });
+    });
+
+</script>
+<script src="~/assets/app-js/companydata.js"></script>
+<script src="~/assets/app-js/company-list.js"></script>
+<script src="~/assets/app-js/company-create.js" asp-append-version="true"></script>
+<script src="~/assets/app-js/company-admin.js" asp-append-version="true"></script>
+<script src="~/assets/app-js/company-task.js" asp-append-version="true"></script>
+<script src="~/assets/app-js/company-product.js" asp-append-version="true"></script>
+<script src="~/assets/app-js/company-note.js" asp-append-version="true"></script>
+<script src="~/assets/app-js/company-membership-type.js" asp-append-version="true"></script>
+<script src="~/assets/app-js/company-transfer-data.js" asp-append-version="true"></script>
+<script src="~/assets/app-js/company-quotes.js" asp-append-version="true"></script>
+
+
+<script src="~/assets/app-js/datapicker/bootstrap-datepicker.js"></script>
+
+<script>
+    $('.input-group.date').datepicker({
+        todayBtn: "linked",
+        format: "yyyy-mm-dd",
+        keyboardNavigation: false,
+        forceParse: false,
+        calendarWeeks: true,
+        autoclose: true
+    });
+</script>
+
+<link href="~/assets/css/card.css" rel="stylesheet" />
+<link href="~/assets/css/custom-css/tile-dash.css" rel="stylesheet" />
+<link href="~/assets/css/datapicker/datepicker3.css" rel="stylesheet" />
+
+<div class="tabs-container">
+    <div class="tabs-left">
+        <ul class="nav nav-tabs">
+            <li class="active"><a data-toggle="tab" href="#tab-general"> Genel</a></li>
+            <li><a data-toggle="tab" href="#tab-contact">İletişim</a></li>
+            <li><a data-toggle="tab" href="#tab-extra" id="extra" data-id="@Model.UserId">Firma Data</a></li>
+            <li><a data-toggle="tab" href="#tab-performance">Performans</a></li>
+            <li><a data-toggle="tab" href="#tab-membership" id="membership" data-id="@Model.UserId">Üyelik</a></li>
+            <li><a data-toggle="tab" href="#tab-product" id="product" data-id="@Model.UserId">Ürünler</a></li>
+            <li><a data-toggle="tab" href="#tab-superv" id="supervisor" data-id="@Model.UserId">Yöneticiler</a></li>
+            <li><a data-toggle="tab" href="#tab-note" id="note" data-id="@Model.UserId">Notlar</a></li>
+            <li><a data-toggle="tab" href="#tab-task" id="task" data-id="@Model.UserId">Görevler</a></li>
+            <li><a data-toggle="tab" href="#tab-buyer-quotes" id="buyer-quotes" data-id="@Model.UserId">Satın Alma</a></li>
+            <li><a data-toggle="tab" href="#tab-seller-quotes" id="seller-quotes" data-id="@Model.UserId">Satış</a></li>
+        </ul>
+        <div class="tab-content ">
+            <div id="tab-general" class="tab-pane active">
+                <div class="panel-body">
+                    <div class="card">
+                        @Html.Partial("_CompanyCardHeader")
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">
+                                <label>Profil fotoğrafı</label>
+                                <input name="files" id="files" type="file" />
+                            </li>
+                            <li class="list-group-item">
+                                <label asp-for="Description"></label>
+                                <p class="card-text">@Model.Description</p>
+                            </li>
+                            <li class="list-group-item">
+                                <label asp-for="Categories"></label>
+                                <p>@Model.Categories</p>
+                            </li>
+                            <li class="list-group-item">
+                                <label asp-for="BusinessType"></label>
+                                <p>@Model.BusinessTypes</p>
+                            </li>
+                            <li class="list-group-item">
+                                <label asp-for="EstablishmentYear"></label>
+                                <p>@Model.EstablishmentYear</p>
+                            </li>
+                            <li class="list-group-item">
+                                <label asp-for="AnnualRevenue"></label>
+                                <p>@Model.AnnualRevenue</p>
+                            </li>
+                            <li class="list-group-item">
+                                <label asp-for="EmployeeCount"></label>
+                                <p>@Model.EmployeeCount</p>
+                            </li>
+                            <li class="list-group-item">
+                                <label asp-for="TaxOffice"></label>
+                                <p>@Model.TaxOffice</p>
+                            </li>
+                            <li class="list-group-item">
+                                <label asp-for="TaxNumber"></label>
+                                <p>@Model.TaxNumber</p>
+                            </li>
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div id="tab-contact" class="tab-pane">
+                <div class="panel-body">
+                    <div class="card">
+                        @Html.Partial("_CompanyCardHeader")
+                        <ul class="list-group list-group-flush">
+                            <!-- <li class="list-group-item">
+                                <label asp-for="User.LocationId"></label>
+                                <p>@Model.User.LocationId</p>
+                            </li>
+                            <li class="list-group-item">
+                                <label asp-for="User.CountryId"></label>
+                                <p>@Model.User.CountryId</p>
+                            </li> -->
+                            <li class="list-group-item">
+                                <label asp-for="User.Location"></label>
+                                <p>@Model.User.Location.Name</p>
+                            </li>
+                            <li class="list-group-item">
+                                <label asp-for="Address"></label>
+                                <p>@Model.Address</p>
+                            </li>
+                            <li class="list-group-item">
+                                <label asp-for="Website"></label>
+                                <p><a href="@Model.Website" target="_blank">@Model.Website</a></p>
+                            </li>
+                            <li class="list-group-item">
+                                <label asp-for="User.Email"></label>
+                                <p>@Model.User.Email</p>
+                            </li>
+                            <li class="list-group-item">
+                                <label asp-for="Phone"></label>
+                                <p>@Model.Phone</p>
+                            </li>
+                            <li class="list-group-item">
+                                <label>Firmaya Git</label>
+                                <p><a href="@Model.WebSiteUrl/@Model.Slug/home" target="_blank">Firma Sayfası</a></p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div id="tab-extra" class="tab-pane">
+                <div class="panel-body">
+                    <div class="card">
+                        @Html.Partial("_CompanyCardHeader")
+                        <div style="padding:15px;">
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="txtSimilarSearch">
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-primary" id="btnSimilarCompanySearch">
+                                        ARA!
+                                    </button>
+                                </span>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <label>Benzer Firmalar</label>
+                                    <div id="similarCompanies">
+                                        <i class="fa fa-refresh fa-spin" style="font-size:25px; margin-left:48%;"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <h3>Transfer Edilen Firmalar</h3>
+                            <div id="tab-extra-wrapper">
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div id="tab-performance" class="tab-pane">
+                <div class="panel-body">
+                    <div class="card">
+                        @Html.Partial("_CompanyCardHeader")
+                        <div class="custom-dash-wrapper">
+                            <div class="custom-dash">
+                                <div class="dash-title"><label asp-for="ResponseRate"></label></div>
+                                <div class="dash-content bcolor"><label>@Model.ResponseRate</label></div>
+                            </div>
+                            <div class="custom-dash">
+                                <div class="dash-title"><label asp-for="ResponseTime"></label></div>
+                                <div class="dash-content gcolor"><label>@Model.ResponseTime</label></div>
+                            </div>
+                            <div class="custom-dash">
+                                <div class="dash-title"></div><label asp-for="TransactionAmount"></label>
+                            </div>
+                            <div class="dash-content rcolor"><label>@Model.TransactionAmount</label></div>
+                        </div>
+                        <div class="custom-dash">
+                            <div class="dash-title"><label asp-for="TransactionCount"></label></div>
+                            <div class="dash-content tcolor"><label>@Model.TransactionCount</label></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="tab-membership" class="tab-pane">
+                <div class="panel-body">
+                    <div class="card">
+                        @Html.Partial("_CompanyCardHeader")
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Üyelik Paketi</th>
+                                            <th>Başlangıç Tarihi</th>
+                                            <th>Bitiş Tarihi</th>
+                                            <th>Ekleyen Kullanıcı</th>
+                                            <th>Oluşturma Tarihi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.MembershipList)
+                                        {
+                                            <tr>
+                                                <td>@item.MembershipPackage</td>
+                                                <td>@item.StartDate.ToShortDateString()</td>
+                                                <td>@item.EndDate.ToShortDateString()</td>
+                                                <td>@item.CreatedUser</td>
+                                                <td>@item.CreatedDate.ToString("dd.MM.yyyy HH:mm")</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </li>
+                            <li class="list-group-item">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Üyelik Tipini Seçiniz</th>
+                                            <th>Üyelik Paketini Seçiniz</th>
+                                            <th>Başlangıç Tarihi</th>
+                                            <th>Bitiş Tarihi</th>
+                                            <th>İşlemler</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><select class="form-control" id="ddlMembershipType"></select></td>
+                                            <td><select class="form-control" id="ddlMembershipPackageType"></select></td>
+                                            <td>
+                                                <div class="input-group date">
+                                                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                                    <input type="text" id="startDate" class="form-control">
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="input-group date">
+                                                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                                    <input type="text" id="endDate" class="form-control">
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-primary" id="btnMembershipPackageUpdate">Paketi Yükselt</button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </li>
+                            <li class="list-group-item">
+                                <label asp-for="MembershipType"></label>
+                                <p>
+                                    @Model.MembershipType
+                                </p>
+                            </li>
+                            <li class="list-group-item">
+                                <label asp-for="MembershipPackage"></label>
+                                <p>@Model.MembershipPackage</p>
+                            </li>
+                            <li class="list-group-item">
+                                <label asp-for="VerificationType"></label>
+                                <p>@Model.VerificationType</p>
+                            </li>
+                            <li class="list-group-item">
+                                <label asp-for="Status"></label>
+                                <p>@Model.Status</p>
+                            </li>
+                            <li class="list-group-item">
+                                <label asp-for="User.Status"></label>
+                                <p>@Model.User.Status</p>
+                            </li>
+                            <li class="list-group-item">
+                                <label asp-for="CreatedDate"></label>
+                                <p>@Model.User.CreatedDate</p>
+                            </li>
+                            <li class="list-group-item">
+                                <label asp-for="UpdatedDate"></label>
+                                <p>@Model.UpdatedDate</p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div id="tab-product" class="tab-pane">
+                <div class="panel-body">
+                    <div class="card">
+                        @Html.Partial("_CompanyCardHeader")
+                        <div id="tab-product-wrapper">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="tab-superv" class="tab-pane">
+                <div class="panel-body">
+                    <div class="card">
+                        @Html.Partial("_CompanyCardHeader")
+                        <div id="tab-superv-wrapper">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="tab-note" class="tab-pane">
+                <div class="panel-body">
+                    <div class="card">
+                        @Html.Partial("_CompanyCardHeader")
+                        <table class="table">
+                            <tr>
+                                <td>Not ekle</td>
+                                <td><input type="text" class="form-control" id="txtNote" /> </td>
+                                <td><input type="button" class="btn btn-success" value="Ekle" data-companyId="@Model.Id" id="btnAddNote" /></td>
+                            </tr>
+                        </table>
+                        <div id="tab-note-wrapper">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="tab-task" class="tab-pane">
+                <div class="panel-body">
+                    <div class="card">
+                        @Html.Partial("_CompanyCardHeader")
+
+                        <table class="table">
+                            <tr>
+                                <td colspan="3">Görev ekle</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="form-group">
+                                        <label class="col-form-label" for="ddlResponsibleUser">Görev atanacak kullanıcıyı seçiniz</label>
+                                        <select class="form-control" id="ddlResponsibleUser"></select>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <label class="col-form-label" for="ddlTaskType">Görev tipini seçiniz</label>
+                                        <select class="form-control" id="ddlTaskType" name="ddlTaskType"></select>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="form-group">
+                                        <label class="col-form-label" for="txtTask">Görev</label>
+                                        <input type="text" id="txtTask" class="form-control" placeholder="Görev açıklamasını yazınız." />
+                                    </div>
+                                </td>
+                                <td>
+                                    <br /><br />
+                                    <input type="button" class="btn btn-success" value="Ekle" data-companyId="@Model.Id" id="btnAddTask" />
+                                </td>
+                            </tr>
+                        </table>
+                        <div id="tab-task-wrapper">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="tab-buyer-quotes" class="tab-pane">
+                <div class="panel-body">
+                    <div class="card">
+                        @Html.Partial("_CompanyCardHeader")
+                        <div id="tab-buyer-quotes-wrapper">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="tab-seller-quotes" class="tab-pane">
+                <div class="panel-body">
+                    <div class="card">
+                        @Html.Partial("_CompanyCardHeader")
+                        <div id="tab-seller-quotes-wrapper">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

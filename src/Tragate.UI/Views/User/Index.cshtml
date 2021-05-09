@@ -1,0 +1,136 @@
+@model Tragate.UI.Models.User.UserListViewModel
+@{ ViewData["Title"] = "Kullanıcılar"; }
+
+
+<div id="userList">
+    <hr/>
+
+    <div class="col-lg-12">
+        <div class="ibox">
+            <div class="ibox-title">
+                <h5>Kullanıcı listesi</h5>
+                <div class="ibox-tools">
+                    <a class="collapse-link">
+                        <i class="fa fa-chevron-up"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="ibox-content">
+                <div class="scroll_content">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <form asp-action="search" method="post">
+                                <div class="form-actions no-color">
+                                    <div id="custom-search-input">
+                                        <div class="input-group col-md-12">
+                                            <input type="text" name="name" value="@Model.SearchKey" class="form-control" placeholder="Firmalarda Ara">
+                                            <span class="input-group-btn">
+                                                <button id="searchBtn" type="submit">
+                                                    <span class="glyphicon glyphicon-search"></span>
+                                                </button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br/>
+                                <br/>
+                                <br/>
+                                <div class="panel panel-default">
+                                    <table class="table table-striped text-center">
+                                        <thead>
+                                        <tr>
+                                            <th>
+                                                İşlemler
+                                            </th>
+                                            <th>
+                                                Kullanıcı No
+                                            </th>
+                                            <th>
+                                                Kullanıcı Email
+                                            </th>
+                                            <th>
+                                                Email Onayı
+                                            </th>
+                                            <th>
+                                                Kullanıcı Adı
+                                            </th>
+                                            <th>
+                                                Durum
+                                            </th>
+                                            <th>
+                                                Oluşturulma Tarihi
+                                            </th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        @foreach (var item in Model.UserList)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    <a title="Details"
+                                                       class="btn btn-rounded btn-white btn-sm userDetail"
+                                                       data-url="user/user-details/@item.UserId" data-title="Kullanıcı Detay" data-toggle="modal" data-target="#userDetailModal-lg">
+                                                        <i class="fa fa-angle-double-right"></i> Detay
+                                                    </a>
+                                                </td>
+                                                <td>
+                                                    @item.UserId
+                                                </td>
+                                                <td>
+                                                    @item.Email
+                                                </td>
+                                                <td>
+                                                    @if (item.EmailVerified)
+                                                    {
+                                                        <label class="label label-success">
+                                                            <i class="fa fa-check"></i>
+                                                        </label>
+                                                    }
+                                                    else
+                                                    {
+                                                        <label class="label label-danger">
+                                                            <i class="fa fa-close"></i>
+                                                        </label>
+                                                    }
+                                                </td>
+                                                <td>
+                                                    @item.UserName
+                                                </td>
+                                                <td>
+                                                    @item.StatusType.ToString()
+                                                </td>
+                                                <td>
+                                                    @item.CreatedDate
+                                                </td>
+
+                                            </tr>
+                                        }
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <cs-pager cs-paging-pagesize="10"
+                                          cs-paging-pagenumber="@Model.PageNumber"
+                                          cs-paging-totalitems="@Model.TotalCount"
+                                          cs-pagenumber-param="page" ,
+                                          asp-route-searchKey="@Model.SearchKey"
+                                          asp-controller="User"
+                                          asp-action="Index">
+                                </cs-pager>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+@Html.Partial("_PopupUserDetail")
+
+@section Scripts {
+    <script src="~/assets/app-js/user.js" asp-append-version="true"></script>
+    <link href="~/assets/css/custom-css/custom-search.css" rel="stylesheet"/>
+}

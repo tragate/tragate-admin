@@ -1,0 +1,28 @@
+@{
+    Layout = null;
+}
+
+<link href="~/assets/css/custom-css/pop-up.css" rel="stylesheet" />
+<style>
+    .modal-lg {
+        width: 900px;
+    }
+</style>
+<div class="modal fade" id="quoteDetailModal-lg" tabindex="-1"  role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="container-title"></h2>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div id="container" class="modal-body">
+                <i class="fa fa-refresh fa-spin" style="font-size:50px; margin-left:48%;"></i>
+            </div>
+            <div class="modal-footer" style="text-align:right;">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+            </div>
+        </div>
+    </div>
+</div>

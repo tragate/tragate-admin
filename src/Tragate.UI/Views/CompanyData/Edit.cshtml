@@ -1,0 +1,260 @@
+﻿@model Tragate.UI.Models.Company.CompanyViewModel 
+@{ ViewData["Title"] = "Firma Düzenle"; }
+
+<style>
+    .small-search {
+        width: 30%;
+        height: 20px;
+        float: right;
+    }
+
+    #imgReviewer {
+        border-radius: 50%;
+    }
+
+    #detail-wrapper {
+        overflow-y: scroll;
+    }
+</style>
+<script>
+    $(document).ready(function() {
+
+        $("#ddlBusinessType").kendoMultiSelect({
+            dataTextField: "value",
+            dataValueField: "id",
+            dataBound: function(e) {
+                var array = JSON.parse("[" + $("#businesstype").val() + "]");
+                var businesstypes = $("#ddlBusinessType").data("kendoMultiSelect");
+                businesstypes.value(array);
+            },
+            dataSource: {
+                serverFiltering: true,
+                transport: {
+                    read: {
+                        url: "/common/business-type",
+                        dataType: 'json'
+                    }
+                },
+                schema: {
+                    type: "json",
+                    data: "data"
+                }
+            }
+        });
+
+        $("#categories").kendoMultiSelect({
+            dataTextField: "value",
+            dataValueField: "id",
+            dataBound: function(e) {
+                var array = JSON.parse("[" + $("#categoryIdString").val() + "]");
+                var categories = $("#categories").data("kendoMultiSelect");
+                categories.value(array);
+            },
+            dataSource: {
+                serverFiltering: true,
+                transport: {
+                    read: {
+                        url: "/category/get-categories",
+                        dataType: 'json'
+                    }
+                },
+                schema: {
+                    type: "json"
+                }
+            }
+        });
+
+    });
+</script>
+
+<script src="~/assets/app-js/small-search.js" asp-append-version="true"></script>
+
+<div class="row" id="detail-wrapper">
+    <div class="col-lg-6 bordered-right">
+        <ul class="list-group list-group-flush">
+            <input type="hidden" id="profileImagePath" value="@Model.CompanyData.ProfileImagePath" />
+            <input type="hidden" id="ProfileDescription" value="@Model.CompanyData.ProfileDescription" />
+            <input type="hidden" id="contact-email" value="@Model.CompanyData.Email" />
+            <input type="hidden" id="contact-phone" value="@Model.CompanyData.Phone" />
+            <input type="hidden" id="contact-website" value="@Model.CompanyData.Website" />
+            <li class="list-group-item">
+                <label asp-for="CompanyData.Title" id="title" data-title="@Model.CompanyData.Title"></label>
+                <p>
+                    <a href="@Model.CompanyData.CompanyProfileLink" target="_blank">@Model.CompanyData.Title</a>
+                </p>
+            </li>
+            <li class="list-group-item">
+                <label asp-for="CompanyData.Membership"></label>
+                <p>@Model.CompanyData.Membership</p>
+            </li>
+            <li class="list-group-item">
+                <label asp-for="CompanyData.ContactPerson" id="contact-person"></label>
+                <p>@Model.CompanyData.ContactPerson</p>
+            </li>
+            <li class="list-group-item">
+                <label asp-for="CompanyData.Category"></label>
+                <p>@Model.CompanyData.Category</p>
+            </li>
+            <li class="list-group-item">
+                <label asp-for="CompanyData.BussinessSegment" id="businessType" data-id="@Model.CompanyData.BussinessSegment"></label>
+                <p>@Model.CompanyData.BussinessSegment</p>
+            </li>
+            <li class="list-group-item max-scrolled">
+                <label asp-for="CompanyData.Tags"></label>
+                <p>@Model.CompanyData.Tags</p>
+            </li>
+            <li class="list-group-item">
+                <label asp-for="CompanyData.TaxNumber" id="taxNumber" data-id="@Model.CompanyData.TaxNumber"></label>
+                <p>@Model.CompanyData.TaxNumber</p>
+            </li>
+            <li class="list-group-item">
+                <label asp-for="CompanyData.EstablishedDateAndNumberOfStaff" id="establishedDate" data-date="@Model.CompanyData.EstablishedDateAndNumberOfStaff"></label>
+                <p>@Model.CompanyData.EstablishedDateAndNumberOfStaff</p>
+            </li>
+            <li class="list-group-item">
+                <label asp-for="CompanyData.TotalRevenue"></label>
+                <p>@Model.CompanyData.TotalRevenue</p>
+            </li>
+            <li class="list-group-item">
+                <label asp-for="CompanyData.City" id="city" data-city="@Model.CompanyData.City"></label>
+                <p>@Model.CompanyData.City</p>
+            </li>
+            <li class="list-group-item">
+                <label asp-for="CompanyData.ReleatedCompanyAndBrand"></label>
+                <p>@Model.CompanyData.ReleatedCompanyAndBrand</p>
+            </li>
+            <li class="list-group-item">
+                <label asp-for="CompanyData.Certificate"></label>
+                <p>@Model.CompanyData.Certificate</p>
+            </li>
+
+
+            <li class="list-group-item">
+                <label asp-for="CompanyData.Address" id="address" data-address="@Model.CompanyData.Address"></label>
+                <p>@Model.CompanyData.Address</p>
+            </li>
+        </ul>
+    </div>
+    <div class="col-lg-6  bordered-left">
+        <form id="updateForm">
+            <input type="hidden" value="@Model.ProfileImagePath" id="profileImage" />
+            <input type="hidden" id="Id" asp-for="CompanyDataId" value="@Model.CompanyData.Id" />
+            <input type="hidden" id="categoryIdString" asp-for="CategoryIdString" />
+            <input type="hidden" id="businesstype" asp-for="BusinessType" />
+            <input type="hidden" id="statusId" asp-for="StatusId" />
+
+            <div class="form-row">
+                <vc:summary />
+                <div class="row">
+                    <p class="text-danger" id="result"></p>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-12">
+                        <label>Benzer Firmalar</label>
+                        <a class="fa fa-refresh pull-right refresh-search" data-id="1" style="margin-top:3px;"></a>
+                        <input type="text" id="companySearch" class="form-control small-search" />
+                        <div id="similars">
+                            <i class="fa fa-refresh fa-spin" style="font-size:25px; margin-left:48%;"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-12">
+                        <label asp-for="User.UserName"></label>
+                        <input asp-for="User.UserName" id="username" class="form-control" />
+                        <span asp-validation-for="User.UserName" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-12">
+                        <label asp-for="CategoryIds"></label>
+                        <select id="categories" name="CategoryIds" data-placeholder="Kategori seç"></select>
+                        <span id="CategoryIdsValidation" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-12">
+                        <label asp-for="BusinessType"></label>
+                        <select id="ddlBusinessType" name="BusinessTypeList" data-placeholder="İşletme tipi seç" class="form-control"></select>
+                        <span id="BusinessTypeListValidation" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-12">
+                        <label asp-for="Description"></label>
+                        <textarea asp-for="Description" rows="4" id="txtDescription" class="form-control"></textarea>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-12">
+                        <label asp-for="Address"></label>
+                        <input asp-for="Address" id="txtAddress" class="form-control" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-12">
+                        <label asp-for="CityId"></label>
+                        <select id="ddlLocation" asp-for="CityId" class="form-control"></select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label asp-for="EstablishmentYear"></label>
+                        <input type="text" asp-for="EstablishmentYear" id="establishmentYear" class="form-control">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label asp-for="Website"></label>
+                        <input asp-for="Website" id="txtWebsite" class="form-control" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label asp-for="Email"></label>
+                        <input type="text" asp-for="Email" id="txtEmail" class="form-control">
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label asp-for="Phone"></label>
+                        <input asp-for="Phone" id="txtPhone" class="form-control" />
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label asp-for="WebsitePoint"></label>
+                        <input asp-for="WebsitePoint" id="txtWebsitePoint" class="form-control">
+                        <span asp-validation-for="WebsitePoint" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label asp-for="WebsiteProductCount"></label>
+                        <input asp-for="WebsiteProductCount" id="txtWebsiteProductCount" class="form-control" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label asp-for="TaxOffice"></label>
+                        <input asp-for="TaxOffice" class="form-control" />
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label asp-for="TaxNumber"></label>
+                        <input asp-for="TaxNumber" id="txtTaxNumber" class="form-control" />
+                        <!-- <span asp-validation-for="CompanyData.StatusId" class="text-danger"></span> -->
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label asp-for="EmployeeCountId"></label>
+                        <select id="ddlEmployeeCount" asp-for="EmployeeCountId" class="form-control"></select>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label asp-for="AnnualRevenueId"></label>
+                        <select id="ddlAnnualRevenue" asp-for="AnnualRevenueId" class="form-control"></select>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts { @{await Html.RenderPartialAsync("_ValidationScriptsPartial");} }

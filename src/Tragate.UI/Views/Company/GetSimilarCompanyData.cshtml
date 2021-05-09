@@ -1,0 +1,38 @@
+@model Tragate.UI.Models.Company.CompanyDataListViewModel
+
+<style>
+    table tr td {
+        text-align: center;
+    }
+</style>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Seç</th>
+            <th>Üyelik</th>
+            <th>Başlık</th>
+            <th>Etiketler</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in @Model.CompanyDataList)
+        {
+            <tr>
+                <td>
+                    <button class="btn btn-primary btn-xs" onclick="CompanyDataMatch(@item.Id,'@item.Title')">Eşleştir</button>
+                </td>
+                <td>@item.Membership</td>
+                <td>
+                    <a href="@item.CompanyProfileLink" target="_blank">
+                        @item.Title
+                    </a>
+                </td>
+                <td>
+                    @item.Tags
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

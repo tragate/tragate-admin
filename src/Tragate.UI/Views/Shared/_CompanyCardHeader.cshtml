@@ -1,0 +1,28 @@
+
+@{
+    Layout = null;
+}
+<style>
+    #image-loading {
+        margin-left: 33px;
+        position: absolute;
+        color: #fff;
+        font-size: 35px;
+        z-index: 100;
+        margin-top: 25px;
+        display: none;
+    }
+</style>
+<div class="card-img-top">
+    <i class="fa fa-spinner fa-spin" id="image-loading"></i>
+    <img id="company-img" src="@Model.User.ProfileImagePath" onerror='this.src="/assets/images/empty-profile.png"' alt="Card image cap" height="100">
+    <a title="Edit" class="btn btn-rounded btn-white btn-sm create pull-right" data-dismiss="modal"
+       data-url="company/edit-company/@Model.User.UserId" data-title="Firma Düzenle" data-toggle="modal" data-target="#createModal">
+        <i class="fa fa-pencil"></i> Düzenle
+    </a>
+</div>
+<div class="card-body">
+    <a href="@Model.WebSiteUrl/@Model.Slug/home" target="_blank">
+        <h5 class="card-title" id="companyTitle" data-title="@Model.User.UserName">@Model.User.UserName</h5>
+    </a>
+</div>

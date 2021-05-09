@@ -1,0 +1,27 @@
+@model Tragate.UI.Models.Company.CompanyListViewModel
+
+<style>
+    table tr td {
+        text-align: center;
+    }
+</style>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Seç</th>
+            <th>Firma Id</th>
+            <th>Başlık</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var item in @Model.CompanyList){
+            <tr>
+                <td><input type="radio" name="company" class="chbPatchCompany" value="@item.User.UserId"/> </td>
+                <td>@item.User.UserId</td>
+                <td><a href="/company/list-all?detail=1&company=@item.User.UserId" target="_blank">@item.User.UserName</a></td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,35 @@
+﻿@model Tragate.UI.Models.User.UserNoteListViewModel
+
+<style>
+    table tr td {
+        text-align: center;
+    }
+</style>
+
+<script src="~/assets/app-js/user-note-pagination.js" asp-append-version="true"></script>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Not</th>
+            <th>İlgili Firma</th>
+            <th>Oluşturulma Tarihi</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.UserNoteList)
+        {
+            <tr>
+                <td>@item.Description</td>
+                <td>@item.CompanyTitle</td>
+                <td>@item.CreatedDate</td>
+            </tr>
+        }
+    </tbody>
+</table>
+<cs-pager cs-paging-pagesize="10"
+          cs-paging-pagenumber="@Model.PageNumber"
+          cs-paging-totalitems="@Model.TotalCount"
+          cs-pagenumber-param="page"
+          asp-controller="User"
+          asp-action="GetUserNote"></cs-pager>

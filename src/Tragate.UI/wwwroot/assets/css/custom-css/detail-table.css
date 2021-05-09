@@ -1,0 +1,6 @@
+﻿body {
+}
+
+table tr td:first-child {
+    background: #f9f9f9;
+}
